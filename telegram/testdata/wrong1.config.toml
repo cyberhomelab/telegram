@@ -1,0 +1,6 @@
+LabName = "MyLab"
+
+[Telegram]
+Token = "0123456789:FAEEbVYdi_MyqlL7NTzyvR1PT9JidSLotJ0"
+ChatId = "12345678" # <-- Type string instead of integer
+MaxCharacters = 4000
