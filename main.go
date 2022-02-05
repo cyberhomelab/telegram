@@ -25,6 +25,7 @@ import (
 )
 
 type Flags struct {
+	Version  string
 	Severity string
 	Message  string
 }
@@ -33,13 +34,27 @@ var (
 	currentFlags Flags
 )
 
+// TODO: Add version
+// const (
+// 	Version = "development"
+// )
+
 func init() {
+	// TODO: Add version
+	// printVersion := flag.Bool("version", false, "Prints current app version")
+	flag.StringVar(&currentFlags.Version, "version", "", "Print the version")
 	flag.StringVar(&currentFlags.Severity, "severity", "Info", "The severity level of the message")
 	flag.StringVar(&currentFlags.Message, "message", "", "The actual message that will be sent")
 	flag.Parse()
 }
 
 func main() {
+	// TODO: Add version
+	// if *printVersion {
+	// 	fmt.Println("Version:\t", Version)
+	// 	return
+	// }
+
 	if telegram.StringIsEmpty(currentFlags.Message) {
 		fmt.Printf("Message is empty")
 		os.Exit(2)

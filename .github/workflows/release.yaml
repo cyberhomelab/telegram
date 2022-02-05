@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release Tag"
+        required: true
+      prerelease:
+        description: "Prerelease"
+        required: true
+        default: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+        id: go
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: make GIT_TAG=${{ github.event.inputs.tag }} build-release
+
+      - name: Compute checksums
+        run: cd bin; for file in *; do shasum --algorithm 256 $file > $file.sha256; done
+
+      - name: License
+        run: cp LICENSE NOTICE bin/
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "bin/*"
+          prerelease: ${{ github.event.inputs.prerelease }}
+          commit: "main"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.tag }}
